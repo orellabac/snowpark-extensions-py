@@ -1,7 +1,66 @@
 {
-    "python.testing.pytestArgs": [
-        "tests"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+ "files.exclude": {
+  "**/.tmp": true
+ },
+ "mochaExplorer.ui": "qunit",
+ "mochaExplorer.files": "tests/**/*.spec.js",
+ "mochaExplorer.timeout": 200000,
+ "mochaExplorer.ignore": [
+  ".snowqm/tests/*",
+  "**/node_modules/**/*.*",
+  "tests/**/node_modules/**/*.*"
+ ],
+ "mochaExplorer.require": [
+  "source-map-support/register"
+ ],
+ "python.testing.pytestArgs": [
+  "tests"
+ ],
+ "debug.allowBreakpointsEverywhere": true,
+ "mochaExplorer.launcherScript": "tests/node_modules/mocha-explorer-launcher-scripts-c8/c8/index.js",
+ "workbench.colorTheme": "Dark BlackDiamond",
+ "workbench.preferredDarkColorTheme": "Dark BlackDiamond",
+ "workbench.preferredHighContrastColorTheme": "Dark BlackDiamond",
+ "workbench.preferredLightColorTheme": "Light BlackDiamond",
+ "workbench.editorAssociations": {
+  "*.csv": "gc-excelviewer-csv-editor",
+  "*.html": "cweijan.htmlViewer",
+  "*.docx": "cweijan.officeViewer",
+  "*.md": "default"
+ },
+ "metals.serverVersion": "0.11.7-SNAPSHOT",
+ "python.showStartPage": false,
+ "python.defaultInterpreterPath": "/opt/conda/bin/python",
+ "python.pythonPath": "/opt/conda/bin/python",
+ "workbench.welcomePage.walkthroughs.openOnInstall": "false",
+ "experiments.override.gettingStarted.overrideCategory.ms-python.python.pythonDataScienceWelcome.when": false,
+ "experiments.override.gettingStarted.overrideCategory.ms-python.python.pythonWelcome.when": false,
+ "workbench.startupEditor": "none",
+ "python.terminal.activateEnvironment": false,
+ "extensions.autoUpdate": false,
+ "testExplorer.mergeSuites": true,
+ "testExplorer.useNativeTesting": true,
+ "csv-preview.lineNumbers": "ordinal",
+ "[python]": {
+  "editor.tabSize": 1
+ },
+ "files.watcherExclude": {
+  "**/target": true
+ },
+ "sqltools.connections": [
+    {
+        "driver": "Snowflake",
+        "name": "mobilize",
+        "username": "U2FsdGVkX18g+xThJ4z2bwdvD6nvP9IKzsI/we7SeV4=",
+        "password": "U2FsdGVkX19W3rkRlu3v7jiUd/0kd6yPg38uiyPW6Ao=",
+        "account": "mobilize",
+        "database": "demodb",
+        "role": "accountadmin",
+        "warehouse": "load_wh",
+        "schema": "poublic"
+    }
+],
+ "sqltools.defaultConnId": 2987,
+ "python.testing.unittestEnabled": false,
+ "python.testing.pytestEnabled": true
 }
