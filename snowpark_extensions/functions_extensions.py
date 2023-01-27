@@ -288,7 +288,14 @@ if not hasattr(F,"___extended"):
             , F.when(columnFloor % F.lit(2) == F.lit(0), columnFloor).otherwise(columnFloor + F.lit(1))
         ).otherwise(F.round(elevatedColumn)) / F.when(F.lit(0) == F.lit(scale), F.lit(1)).otherwise(power)
     
+    def _split_regex(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:int =- 1):
+        value = _to_col_if_str(col,"split_regex")
+        if isinstance(pattern, str):
+            pattern = lit(pattern)
+        return F.split(value,pattern)
 
+
+    
     F.array = _array
     F.array_max = _array_max
     F.array_min = _array_min
@@ -310,3 +317,4 @@ if not hasattr(F,"___extended"):
     F.array_sort = _array_sort
     F.struct = _struct
     F.bround = _bround
+    F.split_regex = _split_regex

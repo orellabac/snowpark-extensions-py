@@ -1,0 +1,6 @@
+ M .vscode/settings.json
+ M snowpark_extensions/functions_extensions.py
+ M tests/test_functions.py
+?? .env
+?? bds-auto-save-mauricio.rojas_mobilize.net-2023-01-27-23-21-20.txt
+?? test.ipynb

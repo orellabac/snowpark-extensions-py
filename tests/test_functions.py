@@ -301,3 +301,11 @@ def test_bround():
     assert resNull[4].ROUNDING == None
     assert resNull[5].ROUNDING == None
 
+def test_split_regex():
+    session = Session.builder.from_snowsql().getOrCreate()
+    from snowflake.snowpark.functions import split_regex
+    df = session.createDataFrame([('oneAtwoBthreeC',)], ['s',])
+    res = df.select(split_regex(df.s, '[ABC]', 2).alias('s')).collect()
+    assert res[0].S == ['one', 'twoBthreeC']
+    res = df.select(split_regex(df.s, '[ABC]', -1).alias('s')).collect()
+    assert res[0].S == ['one', 'two', 'three', '']
