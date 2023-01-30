@@ -1,0 +1,32 @@
+   #special_characters = re.compile("[.*+?^${}()|[\]\\]")
+    def has_special_char(string):
+        return bool(special_characters.search(string))
+
+
+    F.__split_regex = None
+    F._oldsplit = F.split
+    def _split_regex(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:ColumnOrLiteral = -1):
+        value = _to_col_if_str(value,"split_regex")
+        if not F.__split_regex:
+            session = context.get_active_session()
+            current_database = session.get_current_database()
+            def ____split_regex(value:str, pattern:str, limit:int)->str:
+                import re
+                limit = limit - 1
+                if limit < 0:
+                    limit = 0
+                return re.split(pattern,value,limit)
+            F.__split_regex = session.udf.register(____split_regex,is_permanent=False,overwrite=True)
+        def is_not_a_regex(pattern):
+            return not has_special_char(pattern)
+        pattern_col = pattern
+        if isinstance(pattern_col, str):
+            pattern_col = lit(pattern_col)
+        if limit == -1 and isinstance(pattern, str) and is_not_a_regex(pattern):
+            F._oldsplit(value, pattern)
+        if isinstance(limit, int):
+            limit = lit(limit)
+        return F.__split_regex (value,pattern_col, limit)
+
+
+    

@@ -317,4 +317,4 @@ if not hasattr(F,"___extended"):
     F.array_sort = _array_sort
     F.struct = _struct
     F.bround = _bround
-    F.split_regex = _split_regex
+    F.split = _split_regex

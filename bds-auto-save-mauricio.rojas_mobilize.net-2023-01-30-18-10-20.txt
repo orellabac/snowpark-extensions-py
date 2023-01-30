@@ -1,0 +1,5 @@
+ M snowpark_extensions/functions_extensions.py
+ M tests/test_functions.py
+?? bds-auto-save-mauricio.rojas_mobilize.net-2023-01-30-18-10-20.txt
+?? notes.txt
+?? test_spark.py
