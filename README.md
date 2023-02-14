@@ -488,6 +488,29 @@ Any code written in this file will be executed when you start a new Jupyter note
 
 An [example startup.ipy](https://github.com/MobilizeNet/snowpark-extensions-py/blob/main/startup.ipy) is provided
 
+# Logging Extras
+
+## Snowpark Tags
+
+Bart, an Snowflake Evangelist from EMEA created this amazing utility. 
+We are just wrapping it here in the extensions. See his post for a great description
+https://medium.com/snowflake/simple-tags-in-snowflake-snowpark-for-python-c5910749273
+
+You can use in your snowpark procedures:
+```
+def process(session,...):
+    @Tag()
+    def foo(...):
+        ....
+    # or inside your code:
+    def goo(...):
+        # only queries from this context will be tagged
+        with Tag(session, f"drop_in_do_it_too"):
+            session.sql(f'''DROP TABLE IF EXISTS {to_table}''').collect()
+```
+
+# 
+
 # Snowpark Extras
 
 Several additions are also provided that are not packaged in the PyPi library but that enable many common operations.
