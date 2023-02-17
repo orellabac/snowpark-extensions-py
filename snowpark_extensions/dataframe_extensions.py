@@ -79,15 +79,6 @@ if not hasattr(DataFrame,"___extended"):
     TableFunctionCall.alias = adjusted_table_alias
     TableFunctionCall.as_   = adjusted_table_alias
 
-    def get_dtypes(schema):
-        data = np.array([map_to_python_type(x.datatype) for x in schema.fields])
-        # providing an index
-        dtypes_series = pd.Series(data, index=schema.names)
-        return dtypes_series
-
-    DataFrame.dtypes = property(lambda self: get_dtypes(self.schema))
-
-
     def map(self,func,output_types,input_types=None,input_cols=None,to_row=False):
         clazz= _generate_prefix("map")
         output_schema=[]
@@ -143,6 +134,30 @@ if not hasattr(DataFrame,"___extended"):
     def has_null(col):
         return F.array_contains(F.sql_expr("parse_json('null')"),col) | F.coalesce(F.array_contains(lit(None) ,col),lit(False))
     
+    DataFrame.cache = DataFrame.cache_result
+
+    def registerTempTable(self,table_name):
+        """
+        Creates temporary table in by associating a given name with a DataFrame.
+        The resulting temporary table can then be used in SQL queries 
+        or other operations that require a SQL-like interface.
+        """
+        self.write.saveAsTable(table_name,mode="overwrite",table_type="temporary")
+    DataFrame.registerTempTable = registerTempTable
+
+    def printSchema(self):
+        """ 
+        prints DataFrame schema as a Tree
+        """
+        from snowflake.snowpark._internal.type_utils import snow_type_to_dtype_str
+        print("root")
+        fieldinfo = [
+            (name, snow_type_to_dtype_str(field.datatype), field.nullable)
+            for name, field in zip(self.schema.names, self.schema.fields)]
+        for name, type, nullable in fieldinfo:
+            print(f" |-- {name}: {type} (nullable= {nullable})")
+    DataFrame.printSchema
+
     def selectExtended(self,*cols) -> "DataFrame":
         exprs = parse_positional_args_to_list(*cols)
         if not exprs:
@@ -265,7 +280,7 @@ if not hasattr(DataFrame,"___extended"):
                 name = aggregated_col._expression.name
                 return self.clean(self.prepare(aggregated_col).function(name)(col("__firstAggregate")))
             else:
-                raise Exception("Also functions expressions are supported")
+                raise Exception("Alias functions expressions are supported")
 
     def group_by_pivot(self,pivot_col):
         return GroupByPivot(self, pivot_col)

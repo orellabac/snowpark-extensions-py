@@ -65,11 +65,18 @@ from snowflake.snowpark import functions as F
             error_message = str(ex)
             return f"<pre>{error_message}</pre>"
    
-
-
+    def snowflake_session_formatter(session):
+        return f"""<pre>
+    <h2>Account: </h2>{session.get_current_account()}
+    <h2>Database:</h2> {session.get_current_database()}
+    <h2>Warehouse:</h2>{session.get_current_account()}
+    <h2>Schema:</h2>  {session.get_current_schema()}  
+    <h2>QueryTag:</h2>  {session.query_tag}      
+</pre>"""
     # Register the display hook
-    from snowflake.snowpark import DataFrame
+    from snowflake.snowpark import DataFrame,Session
     get_ipython().display_formatter.formatters['text/html'].for_type(DataFrame, snowflake_dataframe_formatter)
+    get_ipython().display_formatter.formatters['text/html'].for_type(Session, snowflake_session_formatter)
 
     from IPython.core.magic import (Magics, magics_class, cell_magic)
     @magics_class
